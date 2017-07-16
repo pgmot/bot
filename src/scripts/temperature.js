@@ -15,7 +15,7 @@ module.exports = (robot => {
 
       let temperature = stdout.split("\n")[0].split("\t")[1];
       let humidity = stdout.split("\n")[1].split("\t")[1];
-      msg.send(`temperature: ${temperature}C, humidity: ${humidity}`);
+      msg.send(`temperature: ${temperature}, humidity: ${humidity}`);
     });
   })
 })
