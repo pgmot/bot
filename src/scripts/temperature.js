@@ -3,13 +3,14 @@
 // Commands:
 //   hubot temperature/temp - now temperature
 
-child_process = require('child_process')
+const child_process = require('child_process');
+const dumpError = require('../util').dumpError;
 
 module.exports = (robot => {
   robot.respond(/(temperature)|(temp)/i, msg => {
     child_process.exec("sudo /opt/hubot-scripts/room_temp.py", (error, stdout, stderr) => {
       if(error){
-        msg.send(`error: ${error}`);
+        dumpError(msg, error, stdout, stderr);
         return;
       }
 
