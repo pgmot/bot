@@ -8,6 +8,7 @@ const dumpError = require('../util').dumpError;
 
 module.exports = (robot => {
   robot.respond(/update/i, msg => {
+    msg.send('git pull...');
     child_process.exec("git pull origin master", (error, stdout, stderr) => {
       if(error){
         dumpError(msg, error, stdout, stderr);
@@ -21,7 +22,7 @@ module.exports = (robot => {
       `);
 
       msg.send('Good bye');
-      setTimeout(() => process.exit(0), 1500);
+      setTimeout(() => process.exit(0), 5000);
     });
   });
 });
