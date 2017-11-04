@@ -9,7 +9,7 @@ const dumpError = require('../util').dumpError;
 module.exports = (robot => {
   robot.respond(/update/i, msg => {
     msg.send('git pull...');
-    child_process.exec("git pull origin master", (error, stdout, stderr) => {
+    child_process.exec("git reset --hard && git fetch && git reset --hard origin/master", (error, stdout, stderr) => {
       if(error){
         dumpError(msg, error, stdout, stderr);
         return;
