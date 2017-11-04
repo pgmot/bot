@@ -5,6 +5,7 @@
 //   hubot aircon off - aircon off
 //   hubot hdmi no1 - switch no1 (Fire TV)
 //   hubot hdmi no2 - switch no2 (switch)
+//   hubot hdmi no3 - switch no3 (instead of turn off)
 
 const child_process = require('child_process');
 const dumpError = require('../util').dumpError;
@@ -34,5 +35,9 @@ module.exports = (robot => {
 
   robot.respond(/hdmi no2/i, msg => {
     sendIR(msg, 'hdmi_sw', 'no2');
+  })
+
+  robot.respond(/hdmi no3/i, msg => {
+    sendIR(msg, 'hdmi_sw', 'no3');
   })
 });
