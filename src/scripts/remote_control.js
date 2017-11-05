@@ -6,6 +6,9 @@
 //   hubot hdmi no1 - switch no1 (Fire TV)
 //   hubot hdmi no2 - switch no2 (switch)
 //   hubot hdmi no3 - switch no3 (instead of turn off)
+//   hubot tv on - on firetv and switch no1
+//   hubot game on - off firetv and switch no2
+//   hubot tv off - offf firetv and switch no3
 
 const child_process = require('child_process');
 const dumpError = require('../util').dumpError;
@@ -17,6 +20,18 @@ function sendIR(msg, device, command){
       return;
     }
     msg.send(`irsend ${device} ${command} done`);
+  });
+}
+
+const DEVICE_ID = 'living';
+function runFireTVAction(action){
+  child_process.exec(`curl localhost:5556/devices/action/${DEVICE_ID}/${action}`, (error, stdout, stderr) => {
+    if(error){
+      dumpError(msg, error, stdout, stderr);
+      return;
+    }
+
+    msg.send(`${action} done`);
   });
 }
 
@@ -39,5 +54,19 @@ module.exports = (robot => {
 
   robot.respond(/hdmi no3/i, msg => {
     sendIR(msg, 'hdmi_sw', 'no3');
+  })
+
+  robot.respond(/tv on/i, msg => {
+    sendIR(msg, 'hdmi_sw', 'no1');
+    runFireTVAction('turn_on');
+  })
+  robot.respond(/game on/i, msg => {
+    sendIR(msg, 'hdmi_sw', 'no2');
+    runFireTVAction('turn_off');
+  });
+
+  robot.respond(/tv off/i, msg => {
+    sendIR(msg, 'hdmi_sw', 'no3');
+    runFireTVAction('turn_off');
   })
 });
