@@ -24,7 +24,7 @@ function sendIR(msg, device, command){
 }
 
 const DEVICE_ID = 'living';
-function runFireTVAction(action){
+function runFireTVAction(msg, action){
   child_process.exec(`curl localhost:5556/devices/action/${DEVICE_ID}/${action}`, (error, stdout, stderr) => {
     if(error){
       dumpError(msg, error, stdout, stderr);
@@ -58,15 +58,15 @@ module.exports = (robot => {
 
   robot.respond(/tv on/i, msg => {
     sendIR(msg, 'hdmi_sw', 'no1');
-    runFireTVAction('turn_on');
+    runFireTVAction(msg, 'turn_on');
   })
   robot.respond(/game on/i, msg => {
     sendIR(msg, 'hdmi_sw', 'no2');
-    runFireTVAction('turn_off');
+    runFireTVAction(msg, 'turn_off');
   });
 
   robot.respond(/tv off/i, msg => {
     sendIR(msg, 'hdmi_sw', 'no3');
-    runFireTVAction('turn_off');
+    runFireTVAction(msg, 'turn_off');
   })
 });
